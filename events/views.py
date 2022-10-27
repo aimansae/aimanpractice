@@ -3,8 +3,20 @@ import calendar
 from calendar import HTMLCalendar
 # for copyright year
 from datetime import datetime
+# to pull data from admin table to all_events function
+from .models import Event
+
 
 # Create your views here.
+def all_events(request):
+    # to pull data from admint table to this function
+    # create a variable, call the table and assign .objects.all()
+    event_list = Event.objects.all()
+    # return the content to event_list template
+    # now pass this event_list variable to our web page**
+    # now we reference 'event_list' on events_list.html page
+
+    return render(request, 'events_list.html',{'event_list': event_list})
 
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):  # %B for month
@@ -38,5 +50,6 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
         'cal': cal,
         'current_year':  current_year,
         'time': time
+
 
     })

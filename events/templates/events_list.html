@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<center>
+    <h1>Events</h1>
+    {% for event in event_list %}
+    <div class="card">
+        <div class="card-header">
+            {{event}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Venue: {{event.venue}}</h5>
+            <p class="card-text">
+
+
+                Date: {{event.event_date}} <br>
+                Venue: {{event.venue}} <br>
+                Venue Website: {{event.venue.web}} <br>
+                Manager: {{event.manager}} <br>
+                Description: {{event.description}} <br>
+                {% for user in event.attendees.all %} <br>
+                Attendees: {{user}}
+                <!--.Attendees is many to many relationship, use .all to -->
+                <!--get another query set add another loop -->
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+
+
+
+    {% endfor %}
+
+</center>
+{% endblock %}

@@ -8,9 +8,9 @@ class Venue(models.Model):
     # not necessary to name
     name = models.CharField('Venue Name', max_length=120)
     address = models.CharField(max_length=300)
-    zip_code = models.CharField(max_length=15)
-    phone = models.CharField('Contact Phone', max_length=15)
-    web = models.URLField('Website Address', max_length=200)
+    zip_code = models.CharField(max_length=15,blank=True ) 
+    phone = models.CharField('Contact Phone', max_length=15, blank=True)
+    web = models.URLField('Website Address', max_length=200, blank=True)
     email_address = models.EmailField('Email')
 
 # to use the model in the admin area
