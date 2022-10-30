@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import calendar
 from calendar import HTMLCalendar
 # for copyright year
@@ -7,13 +7,56 @@ from datetime import datetime
 # for the form to redirect the page
 from django.http import HttpResponseRedirect
 
-from .models import Event
+from .models import Event, Venue
 # import the venue form created
-from .forms import VenueForm
+from .forms import VenueForm, EventForm
 
+
+def add_event(request):
+    submitted = False
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/add_event?submitted=True')
+    else:
+        form = EventForm
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request, 'add_event.html',
+                  {'form': form, 'submitted': submitted})
+
+
+def update_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    form = VenueForm(request.POST or None, instance=venue)
+    if form.is_valid():
+        form.save()
+        return redirect('list-venues')
+    return render(request, 'update_venue.html', {'venue': venue, 'form': form})
+
+
+def search_venues(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        venues = Venue.objects.filter(name__contains=searched)
+        return render(request, 'search_venues.html', {'searched': searched, 'venues': venues})
+    else:
+        return render(request, 'search_venues.html', {})
+
+
+def show_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    return render(request, 'show_venue.html', {'venue': venue})
+
+
+def list_venues(request):
+    venue_list = Venue.objects.all()
+    return render(request, 'venue.html', {'venue_list': venue_list})
 
 
 def add_venue(request):
+
     submitted = False
     if request.method == 'POST':
         form = VenueForm(request.POST)

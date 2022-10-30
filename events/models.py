@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.contrib.auth.models import User
 
-'name','address','zip_code','phone','web','ema'
+
 class Venue(models.Model): #fields to use in form too
     # not necessary to name
     name = models.CharField('Venue Name', max_length=120)
